@@ -19,4 +19,26 @@ public class ItemTextManager implements IItemTextManager{
 
         stack.set(DataComponentTypes.LORE, builder.build());
     }
+
+    @Override
+    public void editLoreLine(ItemStack stack, String line, int lineNum) {
+        LoreBuilder builder = LoreBuilder.of(stack);
+        builder.setLine(lineNum, line);
+        stack.set(DataComponentTypes.LORE, builder.build());
+    }
+
+    @Override
+    public void removeLoreLine(ItemStack stack, int lineNum) {
+        LoreBuilder builder = LoreBuilder.of(stack);
+        builder.lines.remove(lineNum);
+
+        stack.set(DataComponentTypes.LORE, builder.build());
+    }
+
+    @Override
+    public void resetLore(ItemStack stack) {
+        LoreBuilder builder = LoreBuilder.of(stack);
+        builder.reset();
+        stack.set(DataComponentTypes.LORE, builder.build());
+    }
 }
