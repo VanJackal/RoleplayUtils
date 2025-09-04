@@ -1,11 +1,14 @@
 package com.njackal;
 
-import com.njackal.command.ItemTextController;
+import com.njackal.command.CommandRename;
 import com.njackal.lib.commands.CommandManager;
+import com.njackal.lib.commands.ICommand;
 import net.fabricmc.api.ModInitializer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 public class RoleplayUtils implements ModInitializer {
 	public static final String MOD_ID = "roleplay_utils";
@@ -19,8 +22,9 @@ public class RoleplayUtils implements ModInitializer {
 	public void onInitialize() {
 		LOGGER.info("RoleplayUtils initialized!");
 		CommandManager commandManager = new CommandManager();
-		ItemTextController itemTextController = new ItemTextController();
-		commandManager.register(itemTextController);
+		commandManager.register(
+				new CommandRename()
+		);
 	}
 
 }
