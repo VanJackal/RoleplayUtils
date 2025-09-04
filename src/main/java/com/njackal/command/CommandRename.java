@@ -4,12 +4,19 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.njackal.lib.commands.ICommand;
+import com.njackal.logic.text.IItemTextManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 
 public class CommandRename implements ICommand {
+
+    private final IItemTextManager itemTextManager;
+
+    public CommandRename(IItemTextManager itemTextManager) {
+        this.itemTextManager = itemTextManager;
+    }
 
     @Override
     public void register(CommandDispatcher<ServerCommandSource> dispatcher) {
@@ -24,7 +31,11 @@ public class CommandRename implements ICommand {
         PlayerEntity player = source.getPlayer();
         assert player != null;
 
+        String namePattern = ctx.getArgument("name", String.class);
+
         ItemStack selectedStack = player.getInventory().getSelectedStack();
+
+        itemTextManager.renameStack(selectedStack, namePattern);
 
         return 1;
     }

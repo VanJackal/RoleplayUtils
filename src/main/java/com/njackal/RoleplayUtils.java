@@ -2,6 +2,8 @@ package com.njackal;
 
 import com.njackal.command.CommandRename;
 import com.njackal.lib.commands.CommandManager;
+import com.njackal.logic.text.IItemTextManager;
+import com.njackal.logic.text.ItemTextManager;
 import net.fabricmc.api.ModInitializer;
 
 import org.slf4j.Logger;
@@ -18,11 +20,14 @@ public class RoleplayUtils implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		LOGGER.info("RoleplayUtils initialized!");
 		CommandManager commandManager = new CommandManager();
+		IItemTextManager itemTextManager = new ItemTextManager();
+
 		commandManager.register(
-				new CommandRename()
+				new CommandRename(itemTextManager)
 		);
+
+		LOGGER.info("RoleplayUtils initialized!");
 	}
 
 }
