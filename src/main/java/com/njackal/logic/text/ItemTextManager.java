@@ -30,7 +30,7 @@ public class ItemTextManager implements IItemTextManager{
     @Override
     public void removeLoreLine(ItemStack stack, int lineNum) {
         LoreBuilder builder = LoreBuilder.of(stack);
-        builder.lines.remove(lineNum);
+        builder.removeLine(lineNum);
 
         stack.set(DataComponentTypes.LORE, builder.build());
     }

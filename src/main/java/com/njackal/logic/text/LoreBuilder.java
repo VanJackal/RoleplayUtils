@@ -35,10 +35,12 @@ public class LoreBuilder {
     }
 
     public void setLine(int index, String line) {
+        if (index >= lines.size()) return;
         lines.set(index, Text.of(line));
     }
 
     public void removeLine(int index) {
+        if (index >= lines.size()) return;
         lines.remove(index);
     }
 }

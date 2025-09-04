@@ -7,7 +7,6 @@ import com.mojang.brigadier.context.CommandContext;
 import com.njackal.lib.commands.ICommand;
 import com.njackal.logic.text.IItemTextManager;
 import net.minecraft.component.type.LoreComponent;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -26,57 +25,53 @@ public class CommandLore implements ICommand {
                 .then(
                         CommandManager.literal("add").then(
                                 CommandManager.argument("text", StringArgumentType.greedyString())
-                                        .executes(CommandUtils.execPlayerOnly(this::add))
+                                        .executes(CommandUtils.execSelectedItem(this::add))
                         )
                 )
                 .then(
                         CommandManager.literal("remove").then(
                                 CommandManager.argument("line", lineArg)
-                                        .executes(CommandUtils.execPlayerOnly(this::remove))
+                                        .executes(CommandUtils.execSelectedItem(this::remove))
                         )
                 )
                 .then(
                         CommandManager.literal("edit").then(
                                 CommandManager.argument("line", lineArg).then(
                                         CommandManager.argument("text", StringArgumentType.greedyString())
-                                            .executes(CommandUtils.execPlayerOnly(this::edit))
+                                            .executes(CommandUtils.execSelectedItem(this::edit))
                                 )
                         )
                 )
                 .then(
                         CommandManager.literal("reset")
-                                .executes(CommandUtils.execPlayerOnly(this::reset))
+                                .executes(CommandUtils.execSelectedItem(this::reset))
                 )
         );
     }
 
-    public int add(CommandContext<ServerCommandSource> context, PlayerEntity player) {
+    public int add(CommandContext<ServerCommandSource> context, ItemStack stack) {
         String line = context.getArgument("text", String.class);
-        ItemStack stack = player.getInventory().getSelectedStack();
         itemTextManager.addLoreLine(stack, line);
 
         return 1;
     }
 
-    public int edit(CommandContext<ServerCommandSource> context, PlayerEntity player) {
+    public int edit(CommandContext<ServerCommandSource> context, ItemStack stack) {
         String text = context.getArgument("text", String.class);
         int lineNum = context.getArgument("line", Integer.class)-1;
-        ItemStack stack = player.getInventory().getSelectedStack();
 
         itemTextManager.editLoreLine(stack, text, lineNum);
 
         return 1;
     }
 
-    public int remove(CommandContext<ServerCommandSource> context, PlayerEntity player) {
+    public int remove(CommandContext<ServerCommandSource> context, ItemStack stack) {
         int lineNum = context.getArgument("line", Integer.class)-1;
-        ItemStack stack = player.getInventory().getSelectedStack();
         itemTextManager.removeLoreLine(stack,lineNum);
         return 1;
     }
 
-    public int reset(CommandContext<ServerCommandSource> context, PlayerEntity player) {
-        ItemStack stack = player.getInventory().getSelectedStack();
+    public int reset(CommandContext<ServerCommandSource> context, ItemStack stack) {
         itemTextManager.resetLore(stack);
         return 1;
     }
