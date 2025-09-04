@@ -1,5 +1,6 @@
 package com.njackal;
 
+import com.njackal.command.CommandLore;
 import com.njackal.command.CommandRename;
 import com.njackal.lib.commands.CommandManager;
 import com.njackal.logic.text.IItemTextManager;
@@ -24,7 +25,8 @@ public class RoleplayUtils implements ModInitializer {
 		IItemTextManager itemTextManager = new ItemTextManager();
 
 		commandManager.register(
-				new CommandRename(itemTextManager)
+				new CommandRename(itemTextManager),
+				new CommandLore(itemTextManager)
 		);
 
 		LOGGER.info("RoleplayUtils initialized!");

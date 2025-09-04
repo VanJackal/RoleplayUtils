@@ -22,15 +22,11 @@ public class CommandRename implements ICommand {
     public void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(CommandManager.literal("rename").then(
                 CommandManager.argument("name", StringArgumentType.string())
-                        .executes(this::run)
+                        .executes(CommandUtils.execPlayerOnly(this::run))
         ));
     }
 
-    private int run(CommandContext<ServerCommandSource> ctx) {
-        ServerCommandSource source = ctx.getSource();
-        PlayerEntity player = source.getPlayer();
-        assert player != null;
-
+    private int run(CommandContext<ServerCommandSource> ctx, PlayerEntity player) {
         String namePattern = ctx.getArgument("name", String.class);
 
         ItemStack selectedStack = player.getInventory().getSelectedStack();
