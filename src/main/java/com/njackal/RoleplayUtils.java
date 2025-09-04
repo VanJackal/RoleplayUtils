@@ -1,8 +1,11 @@
 package com.njackal;
 
+import com.njackal.command.CommandGlow;
 import com.njackal.command.CommandLore;
 import com.njackal.command.CommandRename;
 import com.njackal.lib.commands.CommandManager;
+import com.njackal.logic.glow.GlowManager;
+import com.njackal.logic.glow.IGlowManager;
 import com.njackal.logic.text.IItemTextManager;
 import com.njackal.logic.text.ItemTextManager;
 import net.fabricmc.api.ModInitializer;
@@ -23,10 +26,12 @@ public class RoleplayUtils implements ModInitializer {
 	public void onInitialize() {
 		CommandManager commandManager = new CommandManager();
 		IItemTextManager itemTextManager = new ItemTextManager();
+		IGlowManager glowManager = new GlowManager();
 
 		commandManager.register(
 				new CommandRename(itemTextManager),
-				new CommandLore(itemTextManager)
+				new CommandLore(itemTextManager),
+				new CommandGlow(glowManager)
 		);
 
 		LOGGER.info("RoleplayUtils initialized!");
