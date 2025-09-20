@@ -20,7 +20,7 @@ public class CommandRename implements ICommand {
     @Override
     public void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(CommandManager.literal("rename").then(
-                CommandManager.argument("name", StringArgumentType.string())
+                CommandManager.argument("name", StringArgumentType.greedyString())
                         .executes(CommandUtils.execSelectedItem(this::run))
         ));
     }
