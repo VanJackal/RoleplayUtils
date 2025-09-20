@@ -1,15 +1,21 @@
 package com.njackal.logic.text;
 
+import com.njackal.lib.text.TextFormatParser;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
 
 
 public class ItemTextManager implements IItemTextManager{
 
+    private final TextFormatParser textFormatParser;
+
+    public ItemTextManager(TextFormatParser textFormatParser){
+        this.textFormatParser = textFormatParser;
+    }
+
     @Override
     public void renameStack(ItemStack stack,String namePattern) {
-        stack.set(DataComponentTypes.ITEM_NAME, Text.literal(namePattern));//todo do name processing
+        stack.set(DataComponentTypes.ITEM_NAME, textFormatParser.format(namePattern));
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.njackal.command.CommandLore;
 import com.njackal.command.CommandModel;
 import com.njackal.command.CommandRename;
 import com.njackal.lib.commands.CommandManager;
+import com.njackal.lib.text.TextFormatParser;
 import com.njackal.logic.glow.GlowManager;
 import com.njackal.logic.glow.IGlowManager;
 import com.njackal.logic.model.IModelManager;
@@ -28,7 +29,8 @@ public class RoleplayUtils implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		CommandManager commandManager = new CommandManager();
-		IItemTextManager itemTextManager = new ItemTextManager();
+		TextFormatParser textFormatParser = new TextFormatParser();
+		IItemTextManager itemTextManager = new ItemTextManager(textFormatParser);
 		IGlowManager glowManager = new GlowManager();
 		IModelManager modelManager = new ModelManager();
 
