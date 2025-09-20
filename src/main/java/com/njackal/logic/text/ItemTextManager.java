@@ -15,7 +15,7 @@ public class ItemTextManager implements IItemTextManager{
 
     @Override
     public void renameStack(ItemStack stack,String namePattern) {
-        stack.set(DataComponentTypes.ITEM_NAME, textFormatParser.format(namePattern));
+        stack.set(DataComponentTypes.ITEM_NAME, textFormatParser.formatText(namePattern));
     }
 
     @Override
