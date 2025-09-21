@@ -1,7 +1,6 @@
 package com.njackal.logic.text;
 
 import com.njackal.lib.text.ITextFormatParser;
-import com.njackal.lib.text.TextFormatParser;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LoreComponent;
 import net.minecraft.item.ItemStack;
