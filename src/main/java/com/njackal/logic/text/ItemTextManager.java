@@ -21,7 +21,7 @@ public class ItemTextManager implements IItemTextManager{
     @Override
     public void addLoreLine(ItemStack stack, String line) {
         LoreBuilder builder = LoreBuilder.of(stack);
-        builder.addLine(line);
+        builder.addLine(textFormatParser.formatString(line));
 
         stack.set(DataComponentTypes.LORE, builder.build());
     }
@@ -29,7 +29,7 @@ public class ItemTextManager implements IItemTextManager{
     @Override
     public void editLoreLine(ItemStack stack, String line, int lineNum) {
         LoreBuilder builder = LoreBuilder.of(stack);
-        builder.setLine(lineNum, line);
+        builder.setLine(lineNum, textFormatParser.formatString(line));
         stack.set(DataComponentTypes.LORE, builder.build());
     }
 
