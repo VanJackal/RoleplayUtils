@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 public class TextFormatParser {
     private final Pattern pattern;
     public TextFormatParser() {
-        pattern = Pattern.compile("(?<!\\\\)(&)([0-9rlmnok])", Pattern.CASE_INSENSITIVE);
+        pattern = Pattern.compile("(?<!\\\\)(&)([0-9abcdefrlmnok])", Pattern.CASE_INSENSITIVE);
     }
 
     public Text formatText(String text) {
