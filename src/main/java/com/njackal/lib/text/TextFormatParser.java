@@ -5,7 +5,7 @@ import net.minecraft.text.Text;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class TextFormatParser {
+public class TextFormatParser implements ITextFormatParser {
     private final Pattern pattern;
     public TextFormatParser() {
         pattern = Pattern.compile("(?<!\\\\)(&)([0-9abcdefrlmnok])", Pattern.CASE_INSENSITIVE);

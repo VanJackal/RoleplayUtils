@@ -1,16 +1,20 @@
 package com.njackal.logic.text;
 
-import com.njackal.lib.text.TextFormatParser;
+import com.njackal.lib.text.ITextFormatParser;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 
 
 public class ItemTextManager implements IItemTextManager{
 
-    private final TextFormatParser textFormatParser;
+    private final ITextFormatParser textFormatParser;
 
-    public ItemTextManager(TextFormatParser textFormatParser){
+    public ItemTextManager(ITextFormatParser textFormatParser){
         this.textFormatParser = textFormatParser;
+    }
+
+    private LoreBuilder getBuilder(ItemStack stack) {
+        return LoreBuilder.of(stack, textFormatParser);
     }
 
     @Override
@@ -20,22 +24,22 @@ public class ItemTextManager implements IItemTextManager{
 
     @Override
     public void addLoreLine(ItemStack stack, String line) {
-        LoreBuilder builder = LoreBuilder.of(stack);
-        builder.addLine(textFormatParser.formatString(line));
+        LoreBuilder builder = getBuilder(stack);
+        builder.addLine(line);
 
         stack.set(DataComponentTypes.LORE, builder.build());
     }
 
     @Override
     public void editLoreLine(ItemStack stack, String line, int lineNum) {
-        LoreBuilder builder = LoreBuilder.of(stack);
-        builder.setLine(lineNum, textFormatParser.formatString(line));
+        LoreBuilder builder = getBuilder(stack);
+        builder.setLine(lineNum, line);
         stack.set(DataComponentTypes.LORE, builder.build());
     }
 
     @Override
     public void removeLoreLine(ItemStack stack, int lineNum) {
-        LoreBuilder builder = LoreBuilder.of(stack);
+        LoreBuilder builder = getBuilder(stack);
         builder.removeLine(lineNum);
 
         stack.set(DataComponentTypes.LORE, builder.build());
@@ -43,7 +47,7 @@ public class ItemTextManager implements IItemTextManager{
 
     @Override
     public void resetLore(ItemStack stack) {
-        LoreBuilder builder = LoreBuilder.of(stack);
+        LoreBuilder builder = getBuilder(stack);
         builder.reset();
         stack.set(DataComponentTypes.LORE, builder.build());
     }

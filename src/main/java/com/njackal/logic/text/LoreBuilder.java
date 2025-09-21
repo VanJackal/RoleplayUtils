@@ -1,5 +1,7 @@
 package com.njackal.logic.text;
 
+import com.njackal.lib.text.ITextFormatParser;
+import com.njackal.lib.text.TextFormatParser;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LoreComponent;
 import net.minecraft.item.ItemStack;
@@ -10,7 +12,9 @@ import java.util.List;
 
 public class LoreBuilder {
     List<Text> lines;
-    public LoreBuilder(LoreComponent init) {
+    private final ITextFormatParser parser;
+    public LoreBuilder(LoreComponent init, ITextFormatParser parser) {
+        this.parser = parser;
         if (init == null) {
             lines = new ArrayList<>();
         } else {
@@ -18,8 +22,8 @@ public class LoreBuilder {
         }
     }
 
-    public static LoreBuilder of(ItemStack stack) {
-        return new LoreBuilder(stack.get(DataComponentTypes.LORE));
+    public static LoreBuilder of(ItemStack stack, ITextFormatParser parser) {
+        return new LoreBuilder(stack.get(DataComponentTypes.LORE), parser);
     }
 
     public LoreComponent build() {
@@ -31,12 +35,12 @@ public class LoreBuilder {
     }
 
     public void addLine(String line) {
-        lines.add(Text.of(line));
+        lines.add(parser.formatText(line));
     }
 
     public void setLine(int index, String line) {
         if (index >= lines.size()) return;
-        lines.set(index, Text.of(line));
+        lines.set(index, parser.formatText(line));
     }
 
     public void removeLine(int index) {
