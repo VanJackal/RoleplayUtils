@@ -12,15 +12,11 @@ public class TextFormatParser implements ITextFormatParser {
     }
 
     public Text formatText(String text) {
-        return Text.literal(formatString(text));
-    }
-
-    public String formatString(String text) {
         Matcher matcher = pattern.matcher(text);
         StringBuilder formattedText = new StringBuilder(text);
         matcher.results().forEach(result ->
                 formattedText.replace(result.start(1),result.end(1), "§"));
 
-        return formattedText.toString().replace("\\&", "&");
+        return Text.literal(formattedText.toString().replace("\\&", "&"));
     }
 }
