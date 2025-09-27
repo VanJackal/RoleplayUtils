@@ -1,9 +1,6 @@
 package com.njackal;
 
-import com.njackal.command.CommandGlow;
-import com.njackal.command.CommandLore;
-import com.njackal.command.CommandModel;
-import com.njackal.command.CommandRename;
+import com.njackal.command.*;
 import com.njackal.lib.commands.CommandManager;
 import com.njackal.lib.text.TextFormatParser;
 import com.njackal.logic.glow.GlowManager;
@@ -38,7 +35,8 @@ public class RoleplayUtils implements ModInitializer {
 				new CommandRename(itemTextManager),
 				new CommandLore(itemTextManager),
 				new CommandGlow(glowManager),
-				new CommandModel(modelManager)
+				new CommandModel(modelManager),
+				new CommandBulkCopy()
 		);
 
 		LOGGER.info("RoleplayUtils initialized!");
