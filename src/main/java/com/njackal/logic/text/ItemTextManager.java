@@ -23,6 +23,11 @@ public class ItemTextManager implements IItemTextManager{
     }
 
     @Override
+    public void renameCustomStack(ItemStack stack, String namePattern) {
+        stack.set(DataComponentTypes.CUSTOM_NAME, textFormatParser.formatText(namePattern));
+    }
+
+    @Override
     public void addLoreLine(ItemStack stack, String line) {
         LoreBuilder builder = getBuilder(stack);
         builder.addLine(line);

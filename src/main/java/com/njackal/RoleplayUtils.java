@@ -36,7 +36,8 @@ public class RoleplayUtils implements ModInitializer {
 				new CommandLore(itemTextManager),
 				new CommandGlow(glowManager),
 				new CommandModel(modelManager),
-				new CommandBulkCopy()
+				new CommandBulkCopy(),
+				new CommandRenameCustom(itemTextManager)
 		);
 
 		LOGGER.info("RoleplayUtils initialized!");

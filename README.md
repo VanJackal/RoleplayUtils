@@ -6,6 +6,10 @@ A mod for various roleplay elements for minecraft
 `/rename <name>`  
 renames an item to the given name, leave empty to reset the item name.
 
+## /renamecustom
+`/rename <name>`  
+renames an item to the given name using the CUSTOM_NAME component, allowing the name to appear in item frames
+
 ## /lore
 `/lore add <lore>`  
 Add a new lore line to the end of the item's lore.
@@ -30,3 +34,9 @@ namespace in a resource pack.
 
 `/model reset`  
 Reset the item model to its default
+
+## /bulkcopy
+copies elements added to item in main hand to all items of the same type if shulkers in the players inventory
+
+*Note: this is a bit finicky, you may need to run the command more than once and the box may need to be placed for
+the items to update*
