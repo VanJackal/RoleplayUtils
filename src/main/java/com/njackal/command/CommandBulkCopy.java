@@ -49,6 +49,14 @@ public class CommandBulkCopy implements ICommand {
         builder.add(DataComponentTypes.LORE, source.get(DataComponentTypes.LORE));
         builder.add(DataComponentTypes.ITEM_NAME, source.get(DataComponentTypes.ITEM_NAME));
         builder.add(DataComponentTypes.ITEM_MODEL, source.get(DataComponentTypes.ITEM_MODEL));
+        Text name = source.get(DataComponentTypes.CUSTOM_NAME);
+        if (name != null) {
+            builder.add(DataComponentTypes.CUSTOM_NAME, name);
+        }
+        Boolean glow = source.get(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE);
+        if (glow != null) {
+            builder.add(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, glow);
+        }
         return builder.build();
     }
 
