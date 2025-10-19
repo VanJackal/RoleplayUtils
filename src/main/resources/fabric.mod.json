@@ -11,7 +11,7 @@
 		"sources": "https://github.com/VanJackal/RoleplayUtils"
 	},
 	"license": "AGPLv3.0",
-	"icon": "assets/modid/icon.png",
+	"icon": "assets/roleplay_utils/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
