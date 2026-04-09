@@ -2,6 +2,7 @@ package com.njackal.logic.text;
 
 import com.njackal.lib.text.ITextFormatParser;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.network.chat.Component;
@@ -26,7 +27,7 @@ public class LoreBuilder {
     }
 
     public ItemLore build() {
-        return new LoreComponent(lines);
+        return new ItemLore(lines);
     }
 
     public void reset(){

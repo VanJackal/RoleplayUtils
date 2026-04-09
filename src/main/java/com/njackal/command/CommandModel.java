@@ -22,7 +22,7 @@ public class CommandModel implements ICommand {
         dispatcher.register(Commands.literal("model")
                 .then(
                         Commands.literal("set").then(
-                                Commands.argument("model", IdentifierArgument.identifier())
+                                Commands.argument("model", IdentifierArgument.id())
                                         .executes(CommandUtils.execSelectedItem(this::set))
                         )
                 )

@@ -12,7 +12,7 @@ public class CommandUtils {
         return (CommandContext<CommandSourceStack> ctx) -> {
             Player player = ctx.getSource().getPlayer();
             if (player == null) {
-                ctx.getSource().sendError(Component.of("Command must be executed by a player"));
+                ctx.getSource().sendFailure(Component.literal("Command must be executed by a player"));
             }
             return command.run(ctx, player);
         };
@@ -20,7 +20,7 @@ public class CommandUtils {
 
     static public Command<CommandSourceStack> execSelectedItem(SelectedItemCommand command) {
         return execPlayerOnly(((ctx, player) -> {
-            ItemStack stack = player.getInventory().getSelectedStack();
+            ItemStack stack = player.getInventory().getSelectedItem();
             return command.run(ctx, stack);
         }));
 

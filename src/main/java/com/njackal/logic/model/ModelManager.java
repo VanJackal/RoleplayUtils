@@ -13,6 +13,6 @@ public class ModelManager implements IModelManager {
     @Override
     public void resetModel(ItemStack stack) {
         String[] id = stack.getItem().toString().split(":");
-        stack.set(DataComponents.ITEM_MODEL, Identifier.of(id[0], id[1]));
+        stack.set(DataComponents.ITEM_MODEL, Identifier.fromNamespaceAndPath(id[0], id[1]));
     }
 }

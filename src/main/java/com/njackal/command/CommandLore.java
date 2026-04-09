@@ -20,7 +20,7 @@ public class CommandLore implements ICommand {
 
     @Override
     public void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-        IntegerArgumentType lineArg = IntegerArgumentType.integer(1, ItemLore.MAX_LORES);
+        IntegerArgumentType lineArg = IntegerArgumentType.integer(1, ItemLore.MAX_LINES);
         dispatcher.register(Commands.literal("lore")
                 .then(
                         Commands.literal("add").then(
