@@ -1,6 +1,6 @@
 package com.njackal.logic.text;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 public interface IItemTextManager {
     void renameStack(ItemStack stack, String namePattern);

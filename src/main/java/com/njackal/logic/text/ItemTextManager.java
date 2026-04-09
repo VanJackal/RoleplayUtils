@@ -1,8 +1,8 @@
 package com.njackal.logic.text;
 
 import com.njackal.lib.text.ITextFormatParser;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.item.ItemStack;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.ItemStack;
 
 
 public class ItemTextManager implements IItemTextManager{
@@ -18,13 +18,13 @@ public class ItemTextManager implements IItemTextManager{
     }
 
     @Override
-    public void renameStack(ItemStack stack,String namePattern) {
-        stack.set(DataComponentTypes.ITEM_NAME, textFormatParser.formatText(namePattern));
+    public void renameStack(ItemStack stack, String namePattern) {
+        stack.set(DataComponents.ITEM_NAME, textFormatParser.formatText(namePattern));
     }
 
     @Override
     public void renameCustomStack(ItemStack stack, String namePattern) {
-        stack.set(DataComponentTypes.CUSTOM_NAME, textFormatParser.formatText(namePattern));
+        stack.set(DataComponents.CUSTOM_NAME, textFormatParser.formatText(namePattern));
     }
 
     @Override
@@ -32,14 +32,14 @@ public class ItemTextManager implements IItemTextManager{
         LoreBuilder builder = getBuilder(stack);
         builder.addLine(line);
 
-        stack.set(DataComponentTypes.LORE, builder.build());
+        stack.set(DataComponents.LORE, builder.build());
     }
 
     @Override
     public void editLoreLine(ItemStack stack, String line, int lineNum) {
         LoreBuilder builder = getBuilder(stack);
         builder.setLine(lineNum, line);
-        stack.set(DataComponentTypes.LORE, builder.build());
+        stack.set(DataComponents.LORE, builder.build());
     }
 
     @Override
@@ -47,13 +47,13 @@ public class ItemTextManager implements IItemTextManager{
         LoreBuilder builder = getBuilder(stack);
         builder.removeLine(lineNum);
 
-        stack.set(DataComponentTypes.LORE, builder.build());
+        stack.set(DataComponents.LORE, builder.build());
     }
 
     @Override
     public void resetLore(ItemStack stack) {
         LoreBuilder builder = getBuilder(stack);
         builder.reset();
-        stack.set(DataComponentTypes.LORE, builder.build());
+        stack.set(DataComponents.LORE, builder.build());
     }
 }

@@ -3,39 +3,40 @@ package com.njackal.command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.njackal.lib.commands.ICommand;
-import net.minecraft.component.ComponentChanges;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.ContainerComponent;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.Text;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.component.ItemContainerContents;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.network.chat.Component;
 
 public class CommandBulkCopy implements ICommand {
 
     @Override
-    public void register(CommandDispatcher<ServerCommandSource> dispatcher) {
-        dispatcher.register(CommandManager.literal("bulkcopy")
+    public void register(CommandDispatcher<CommandSourceStack> dispatcher) {
+        dispatcher.register(Commands.literal("bulkcopy")
                 .executes(CommandUtils.execPlayerOnly(this::run))
         );
     }
 
-    public int run(CommandContext<ServerCommandSource> ctx, PlayerEntity player) {
-        ItemStack hand = player.getInventory().getSelectedStack();
+    public int run(CommandContext<CommandSourceStack> ctx, Player player) {
+        ItemStack hand = player.getInventory().getSelectedItem();
         if (hand.isEmpty()) {
-            ctx.getSource().sendError(Text.literal("Must be holding an item to copy."));
+            ctx.getSource().sendFailure(Component.literal("Must be holding an item to copy."));
             return 0;
         }
 
         Item item = hand.getItem();
-        ComponentChanges changes = getComponentChanges(hand);
+        DataComponentPatch changes = getComponentChanges(hand);
 
-        for (ItemStack stack : player.getInventory().getMainStacks()) {//find each box
+        for (ItemStack stack : player.getInventory()) {//find each box
             if (stack.getItem() == Items.SHULKER_BOX) {
-                ContainerComponent box = stack.get(DataComponentTypes.CONTAINER);
+                ItemContainerContents box = stack.get(DataComponents.CONTAINER);
                 assert box != null;
                 copyToContainer(box, item, changes);
             }
@@ -44,26 +45,26 @@ public class CommandBulkCopy implements ICommand {
         return 1;
     }
 
-    private static ComponentChanges getComponentChanges(ItemStack source) {
-        ComponentChanges.Builder builder = ComponentChanges.builder();
-        builder.add(DataComponentTypes.LORE, source.get(DataComponentTypes.LORE));
-        builder.add(DataComponentTypes.ITEM_NAME, source.get(DataComponentTypes.ITEM_NAME));
-        builder.add(DataComponentTypes.ITEM_MODEL, source.get(DataComponentTypes.ITEM_MODEL));
-        Text name = source.get(DataComponentTypes.CUSTOM_NAME);
+    private static DataComponentPatch getComponentChanges(ItemStack source) {
+        DataComponentPatch.Builder builder = DataComponentPatch.builder();
+        builder.set(DataComponents.LORE, source.get(DataComponents.LORE));
+        builder.set(DataComponents.ITEM_NAME, source.get(DataComponents.ITEM_NAME));
+        builder.set(DataComponents.ITEM_MODEL, source.get(DataComponents.ITEM_MODEL));
+        Component name = source.get(DataComponents.CUSTOM_NAME);
         if (name != null) {
-            builder.add(DataComponentTypes.CUSTOM_NAME, name);
+            builder.set(DataComponents.CUSTOM_NAME, name);
         }
-        Boolean glow = source.get(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE);
+        Boolean glow = source.get(DataComponents.ENCHANTMENT_GLINT_OVERRIDE);
         if (glow != null) {
-            builder.add(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, glow);
+            builder.set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, glow);
         }
         return builder.build();
     }
 
-    private static void copyToContainer(ContainerComponent box, Item item, ComponentChanges changes) {
-        for(ItemStack boxItem : box.iterateNonEmpty()){ // copy format to items in the box
-            if (boxItem.getItem() == item) { //only copy if itemtype matches
-                boxItem.applyChanges(changes);
+    private static void copyToContainer(ItemContainerContents box, Item item, DataComponentPatch changes) {
+        for(ItemStackTemplate boxItem : box.nonEmptyItems()){ // copy format to items in the box
+            if (boxItem.item().value() == item) { //only copy if itemtype matches
+                boxItem.apply(changes);
             }
         }
     }
