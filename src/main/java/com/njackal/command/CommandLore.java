@@ -6,10 +6,10 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.njackal.lib.commands.ICommand;
 import com.njackal.logic.text.IItemTextManager;
-import net.minecraft.component.type.LoreComponent;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.world.item.component.ItemLore;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.CommandSourceStack;
 
 public class CommandLore implements ICommand {
 
@@ -19,44 +19,44 @@ public class CommandLore implements ICommand {
     }
 
     @Override
-    public void register(CommandDispatcher<ServerCommandSource> dispatcher) {
-        IntegerArgumentType lineArg = IntegerArgumentType.integer(1, LoreComponent.MAX_LORES);
-        dispatcher.register(CommandManager.literal("lore")
+    public void register(CommandDispatcher<CommandSourceStack> dispatcher) {
+        IntegerArgumentType lineArg = IntegerArgumentType.integer(1, ItemLore.MAX_LINES);
+        dispatcher.register(Commands.literal("lore")
                 .then(
-                        CommandManager.literal("add").then(
-                                CommandManager.argument("text", StringArgumentType.greedyString())
+                        Commands.literal("add").then(
+                                Commands.argument("text", StringArgumentType.greedyString())
                                         .executes(CommandUtils.execSelectedItem(this::add))
                         )
                 )
                 .then(
-                        CommandManager.literal("remove").then(
-                                CommandManager.argument("line", lineArg)
+                        Commands.literal("remove").then(
+                                Commands.argument("line", lineArg)
                                         .executes(CommandUtils.execSelectedItem(this::remove))
                         )
                 )
                 .then(
-                        CommandManager.literal("edit").then(
-                                CommandManager.argument("line", lineArg).then(
-                                        CommandManager.argument("text", StringArgumentType.greedyString())
+                        Commands.literal("edit").then(
+                                Commands.argument("line", lineArg).then(
+                                        Commands.argument("text", StringArgumentType.greedyString())
                                             .executes(CommandUtils.execSelectedItem(this::edit))
                                 )
                         )
                 )
                 .then(
-                        CommandManager.literal("reset")
+                        Commands.literal("reset")
                                 .executes(CommandUtils.execSelectedItem(this::reset))
                 )
         );
     }
 
-    public int add(CommandContext<ServerCommandSource> context, ItemStack stack) {
+    public int add(CommandContext<CommandSourceStack> context, ItemStack stack) {
         String line = context.getArgument("text", String.class);
         itemTextManager.addLoreLine(stack, line);
 
         return 1;
     }
 
-    public int edit(CommandContext<ServerCommandSource> context, ItemStack stack) {
+    public int edit(CommandContext<CommandSourceStack> context, ItemStack stack) {
         String text = context.getArgument("text", String.class);
         int lineNum = context.getArgument("line", Integer.class)-1;
 
@@ -65,13 +65,13 @@ public class CommandLore implements ICommand {
         return 1;
     }
 
-    public int remove(CommandContext<ServerCommandSource> context, ItemStack stack) {
+    public int remove(CommandContext<CommandSourceStack> context, ItemStack stack) {
         int lineNum = context.getArgument("line", Integer.class)-1;
         itemTextManager.removeLoreLine(stack,lineNum);
         return 1;
     }
 
-    public int reset(CommandContext<ServerCommandSource> context, ItemStack stack) {
+    public int reset(CommandContext<CommandSourceStack> context, ItemStack stack) {
         itemTextManager.resetLore(stack);
         return 1;
     }

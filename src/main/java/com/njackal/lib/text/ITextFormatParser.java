@@ -1,7 +1,7 @@
 package com.njackal.lib.text;
 
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 public interface ITextFormatParser {
-    Text formatText(String text);
+    Component formatText(String text);
 }

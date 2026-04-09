@@ -1,8 +1,8 @@
 package com.njackal.lib.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
-import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.commands.CommandSourceStack;
 
 public interface ICommand {
-    void register(CommandDispatcher<ServerCommandSource> dispatcher);
+    void register(CommandDispatcher<CommandSourceStack> dispatcher);
 }

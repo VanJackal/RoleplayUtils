@@ -1,18 +1,19 @@
 package com.njackal.logic.text;
 
 import com.njackal.lib.text.ITextFormatParser;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.LoreComponent;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.component.ItemLore;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class LoreBuilder {
-    List<Text> lines;
+    List<Component> lines;
     private final ITextFormatParser parser;
-    public LoreBuilder(LoreComponent init, ITextFormatParser parser) {
+    public LoreBuilder(ItemLore init, ITextFormatParser parser) {
         this.parser = parser;
         if (init == null) {
             lines = new ArrayList<>();
@@ -22,11 +23,11 @@ public class LoreBuilder {
     }
 
     public static LoreBuilder of(ItemStack stack, ITextFormatParser parser) {
-        return new LoreBuilder(stack.get(DataComponentTypes.LORE), parser);
+        return new LoreBuilder(stack.get(DataComponents.LORE), parser);
     }
 
-    public LoreComponent build() {
-        return new LoreComponent(lines);
+    public ItemLore build() {
+        return new ItemLore(lines);
     }
 
     public void reset(){

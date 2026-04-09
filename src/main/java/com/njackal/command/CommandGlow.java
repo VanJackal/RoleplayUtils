@@ -5,9 +5,9 @@ import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.njackal.lib.commands.ICommand;
 import com.njackal.logic.glow.IGlowManager;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.CommandSourceStack;
 
 public class CommandGlow implements ICommand {
 
@@ -18,22 +18,22 @@ public class CommandGlow implements ICommand {
     }
 
     @Override
-    public void register(CommandDispatcher<ServerCommandSource> dispatcher) {
-        dispatcher.register(CommandManager.literal("glow")
+    public void register(CommandDispatcher<CommandSourceStack> dispatcher) {
+        dispatcher.register(Commands.literal("glow")
                 .executes(CommandUtils.execSelectedItem(this::enableGlow))
                 .then(
-                        CommandManager.argument("glowing", BoolArgumentType.bool())
+                        Commands.argument("glowing", BoolArgumentType.bool())
                                 .executes(CommandUtils.execSelectedItem(this::setGlow))
                 )
         );
     }
 
-    public int enableGlow(CommandContext<ServerCommandSource> ctx, ItemStack stack){
+    public int enableGlow(CommandContext<CommandSourceStack> ctx, ItemStack stack){
         glowManager.setGlow(stack, true);
         return 1;
     }
 
-    public int setGlow(CommandContext<ServerCommandSource> ctx, ItemStack stack) {
+    public int setGlow(CommandContext<CommandSourceStack> ctx, ItemStack stack) {
         boolean glowing = BoolArgumentType.getBool(ctx, "glowing");
         glowManager.setGlow(stack, glowing);
         return 1;

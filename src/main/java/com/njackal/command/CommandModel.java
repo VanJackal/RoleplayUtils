@@ -4,11 +4,11 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.njackal.lib.commands.ICommand;
 import com.njackal.logic.model.IModelManager;
-import net.minecraft.command.argument.IdentifierArgumentType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.util.Identifier;
+import net.minecraft.commands.arguments.IdentifierArgument;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.resources.Identifier;
 
 public class CommandModel implements ICommand {
 
@@ -18,28 +18,28 @@ public class CommandModel implements ICommand {
         this.modelManager = modelManager;
     }
     @Override
-    public void register(CommandDispatcher<ServerCommandSource> dispatcher) {
-        dispatcher.register(CommandManager.literal("model")
+    public void register(CommandDispatcher<CommandSourceStack> dispatcher) {
+        dispatcher.register(Commands.literal("model")
                 .then(
-                        CommandManager.literal("set").then(
-                                CommandManager.argument("model", IdentifierArgumentType.identifier())
+                        Commands.literal("set").then(
+                                Commands.argument("model", IdentifierArgument.id())
                                         .executes(CommandUtils.execSelectedItem(this::set))
                         )
                 )
                 .then(
-                        CommandManager.literal("reset")
+                        Commands.literal("reset")
                                 .executes(CommandUtils.execSelectedItem(this::reset))
                 )
         );
     }
 
-    public int set(CommandContext<ServerCommandSource> context, ItemStack stack) {
+    public int set(CommandContext<CommandSourceStack> context, ItemStack stack) {
         Identifier model = context.getArgument("model", Identifier.class);
         modelManager.setModel(stack, model);
         return 1;
     }
 
-    public int reset(CommandContext<ServerCommandSource> context, ItemStack stack) {
+    public int reset(CommandContext<CommandSourceStack> context, ItemStack stack) {
         modelManager.resetModel(stack);
         return 1;
     }
