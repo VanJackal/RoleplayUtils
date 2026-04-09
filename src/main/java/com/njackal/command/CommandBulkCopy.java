@@ -5,7 +5,6 @@ import com.mojang.brigadier.context.CommandContext;
 import com.njackal.lib.commands.ICommand;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -14,6 +13,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
+
+import java.util.List;
 
 public class CommandBulkCopy implements ICommand {
 
@@ -38,7 +39,8 @@ public class CommandBulkCopy implements ICommand {
             if (stack.getItem() == Items.SHULKER_BOX) {
                 ItemContainerContents box = stack.get(DataComponents.CONTAINER);
                 assert box != null;
-                copyToContainer(box, item, changes);
+                ItemContainerContents newContent = remakeBoxContents(box, item, changes);
+                stack.set(DataComponents.CONTAINER, newContent);
             }
         }
 
@@ -61,12 +63,18 @@ public class CommandBulkCopy implements ICommand {
         return builder.build();
     }
 
-    private static void copyToContainer(ItemContainerContents box, Item item, DataComponentPatch changes) {
-        for(ItemStackTemplate boxItem : box.nonEmptyItems()){ // copy format to items in the box
-            if (boxItem.item().value() == item) { //only copy if itemtype matches
-                boxItem.apply(changes);
+    private static ItemContainerContents remakeBoxContents(ItemContainerContents box, Item item, DataComponentPatch changes) {
+        List<ItemStack> items = box.allItemsCopyStream().map((s)-> {
+            if (s.isEmpty()) {
+                return ItemStack.EMPTY;
+            } else if (s.getItem() == item) {
+                s.applyComponents(changes);
+                return s;
+            } else {
+                return s;
             }
-        }
+        }).toList();
+        return ItemContainerContents.fromItems(items);
     }
 
 }
