@@ -64,7 +64,7 @@ public class CommandBulkCopy implements ICommand {
     }
 
     private static ItemContainerContents remakeBoxContents(ItemContainerContents box, Item item, DataComponentPatch changes) {
-        List<ItemStack> items = box.allItemsCopyStream().map((s)-> {
+        List<ItemStack> items = box.nonEmptyItemCopyStream().map((s)-> {
             if (s.isEmpty()) {
                 return ItemStack.EMPTY;
             } else if (s.getItem() == item) {
